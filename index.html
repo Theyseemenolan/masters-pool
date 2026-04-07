@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="60">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masters Pool</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --accent: #0f766e;
+      --accent-dark: #115e59;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      margin: 0 0 8px 0;
+      font-size: 32px;
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .champion-image, .champion-placeholder {
+      width: 120px;
+      height: 120px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #374151;
+      font-size: 14px;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .champion-title {
+      font-size: 14px;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .champion-name {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .champion-meta {
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .past-link {
+      display: inline-block;
+      color: white;
+      background: var(--accent);
+      text-decoration: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .past-link:hover {
+      background: var(--accent-dark);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      background: #fafafa;
+    }
+
+    .team-link {
+      color: var(--accent-dark);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .team-link:hover {
+      text-decoration: underline;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .cut {
+      background: #ffe2e2;
+      color: #a10000;
+    }
+
+    .complete {
+      background: #e4f6e4;
+      color: #116611;
+    }
+
+    .other {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .team-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .team-card {
+      background: var(--card);
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .team-card summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      background: var(--card);
+    }
+
+    .team-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .team-card summary::after {
+      content: "+";
+      font-size: 22px;
+      color: var(--muted);
+      margin-left: 12px;
+    }
+
+    .team-card[open] summary::after {
+      content: "−";
+    }
+
+    .team-name {
+      font-size: 18px;
+    }
+
+    .team-score {
+      color: var(--accent-dark);
+      margin-left: auto;
+      margin-right: 14px;
+    }
+
+    .team-content {
+      padding: 0 20px 18px 20px;
+    }
+
+    @media (max-width: 700px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .champion-image, .champion-placeholder {
+        width: 100px;
+        height: 100px;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+  <script>
+    function openTeam(id) {
+      setTimeout(function() {
+        const el = document.getElementById(id);
+        if (el) {
+          el.open = true;
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 50);
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Masters Pool</h1>
+    <div class="sub">
+      Last updated: 2026-04-01 09:56 PM<br>
+      Tournament status: Official | Round status: Official
+    </div>
+
+    <section class="card hero">
+      <div>
+        <img src="champion.jpg" alt="Reigning champion" class="champion-image">
+      </div>
+      <div>
+        <div class="champion-title">Reigning Pool Champion</div>
+        <div class="champion-name">Big Daddy Trav</div>
+        <div class="champion-meta">
+          Champion of 2025 • Winning score: -12
+        </div>
+        <a class="past-link" href="past_champions.html">View Past Champions</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Standings</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Entry</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td>1</td>
+              <td><a href="#team-hunter" class="team-link" onclick="openTeam('team-hunter')">Hunter</a></td>
+              <td>-7</td>
+            </tr>
+            
+            <tr>
+              <td>2</td>
+              <td><a href="#team-jayde" class="team-link" onclick="openTeam('team-jayde')">Jayde</a></td>
+              <td>+3</td>
+            </tr>
+            
+            <tr>
+              <td>3</td>
+              <td><a href="#team-alex" class="team-link" onclick="openTeam('team-alex')">Alex</a></td>
+              <td>+7</td>
+            </tr>
+            
+            <tr>
+              <td>4</td>
+              <td><a href="#team-zach" class="team-link" onclick="openTeam('team-zach')">Zach</a></td>
+              <td>+32</td>
+            </tr>
+            
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="team-list">
+        
+            <details class="team-card" id="team-hunter">
+              <summary>
+                <span class="team-name">Hunter</span>
+                <span class="team-score">-7</span>
+              </summary>
+              <div class="team-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th>Score</th>
+                      <th>Pos</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                <tr>
+                  <td>Scottie Scheffler</td>
+                  <td>-11</td>
+                  <td>1</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Collin Morikawa</td>
+                  <td>-4</td>
+                  <td>T3</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Joaquín Niemann</td>
+                  <td>+4</td>
+                  <td>T22</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Robert Macintyre</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>Corey Connors</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>JJ Spaun</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>Lucas Glover</td>
+                  <td>+3</td>
+                  <td>T20</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Matthieu Pavon</td>
+                  <td>+1</td>
+                  <td>T12</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                  </tbody>
+                </table>
+              </div>
+            </details>
+            
+            <details class="team-card" id="team-jayde">
+              <summary>
+                <span class="team-name">Jayde</span>
+                <span class="team-score">+3</span>
+              </summary>
+              <div class="team-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th>Score</th>
+                      <th>Pos</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                <tr>
+                  <td>Scottie Scheffler</td>
+                  <td>-11</td>
+                  <td>1</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Collin Morikawa</td>
+                  <td>-4</td>
+                  <td>T3</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Patrick Cantlay</td>
+                  <td>+4</td>
+                  <td>T22</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Min Woo Lee</td>
+                  <td>+4</td>
+                  <td>T22</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Corey Connors</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>Billy Horschel</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>JT Potson</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>Bubba Watson</td>
+                  <td>+10</td>
+                  <td>—</td>
+                  <td><span class="badge cut">CUT</span></td>
+                </tr>
+                
+                  </tbody>
+                </table>
+              </div>
+            </details>
+            
+            <details class="team-card" id="team-alex">
+              <summary>
+                <span class="team-name">Alex</span>
+                <span class="team-score">+7</span>
+              </summary>
+              <div class="team-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th>Score</th>
+                      <th>Pos</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                <tr>
+                  <td>Rory McIlroy</td>
+                  <td>+4</td>
+                  <td>T22</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Collin Morikawa</td>
+                  <td>-4</td>
+                  <td>T3</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Patrick Cantlay</td>
+                  <td>+4</td>
+                  <td>T22</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Will Zalatoris</td>
+                  <td>E</td>
+                  <td>T9</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Patrick Reed</td>
+                  <td>+1</td>
+                  <td>T12</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Cameron Young</td>
+                  <td>E</td>
+                  <td>T9</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Cameron Davis</td>
+                  <td>+1</td>
+                  <td>T12</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Matthieu Pavon</td>
+                  <td>+1</td>
+                  <td>T12</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                  </tbody>
+                </table>
+              </div>
+            </details>
+            
+            <details class="team-card" id="team-zach">
+              <summary>
+                <span class="team-name">Zach</span>
+                <span class="team-score">+32</span>
+              </summary>
+              <div class="team-content">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th>Score</th>
+                      <th>Pos</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                <tr>
+                  <td>Rory McIlroy</td>
+                  <td>+4</td>
+                  <td>T22</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Byson Dechambeau</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>Brooks Koepka</td>
+                  <td>+9</td>
+                  <td>T45</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Cameron Smith</td>
+                  <td>-2</td>
+                  <td>T6</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Brian Harman</td>
+                  <td>+9</td>
+                  <td>—</td>
+                  <td><span class="badge cut">CUT</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Billy Horschel</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td></td>
+                </tr>
+                
+                <tr>
+                  <td>Lucas Glover</td>
+                  <td>+3</td>
+                  <td>T20</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                <tr>
+                  <td>Danny Willett</td>
+                  <td>+9</td>
+                  <td>T45</td>
+                  <td><span class="badge complete">F</span></td>
+                </tr>
+                
+                  </tbody>
+                </table>
+              </div>
+            </details>
+            
+      </div>
+    </section>
+  </div>
+</body>
+</html>
